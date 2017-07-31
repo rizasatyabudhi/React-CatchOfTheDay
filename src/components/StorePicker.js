@@ -8,13 +8,18 @@ class StorePicker extends React.Component {
     event.preventDefault();
 
     // Grap the text from the input box
-    console.log(this.storeInput.value);
+    const storeId = this.storeInput.value;
     // Transition from "/" to "/store/:storeId"
+    this.context.router.transitionTo(`store/${storeId}`);
   }
 
   render() {
     return (
-      <form className="store-selector" onSubmit={(e) => { this.goToStore(e); }}>
+      <form
+        className="store-selector"
+        // We need to use arrow function to bind "this"
+        onSubmit={(e) => { this.goToStore(e); }}
+      >
         <h2>Please Enter a Store Name</h2>
         <input
           type="text"
@@ -31,5 +36,11 @@ class StorePicker extends React.Component {
   }
 }
 
+// This is to link our StorePicker.js with the Router in the index.js (Root Component)
+// Rather than use props, we use context, all of the child component get access to whatever we want
+// in this case, we want our child component (StorePicker.js) to get access to "router"
+StorePicker.contextTypes = {
+  router: React.PropTypes.object,
+};
 
 export default StorePicker;
